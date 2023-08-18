@@ -7,3 +7,4 @@ Coding Along With Bro-code, 4hr challenge of learning C....That's like 4-5 games
 
 # 2 Get a compiler...Linux has g++ already. Just use Linux.
 
+# Set up defaults
