@@ -1,2 +1,1 @@
-
-    printf("%lf \n", squareRootExample);
+lf
