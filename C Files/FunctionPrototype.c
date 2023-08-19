@@ -4,15 +4,13 @@ Structure of C code:
 function prototype
 main function
 functions
-
-
 */
 void greet(char[], int id); // prototype to ensure args are correct
 
 int main()
 {
     greet("Jon", 44);
-    greet("Tim");
+    greet("Tim", "11"); // Error occurs because "33" is a string
     return 0;
 }
 
