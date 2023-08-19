@@ -1,1 +1,2 @@
-    strupr(fName);
+
+    return 0;
