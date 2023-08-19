@@ -10,7 +10,7 @@ int main()
     {
         printf("You're allowed into the bar, first time huh?\n");
     }
-    else if (age > 21)
+    else if (age > 21 && age < 65)
     {
         printf("Hi grandpa!\n");
     }
