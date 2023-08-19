@@ -12,6 +12,11 @@ double square(double x)
     return x * x;
 }
 
+double biggerNumber(double a, double b)
+{
+    return (a > b) ? a : b; // if a < b return a, otherwise b!
+}
+
 int main()
 {
     char name[] = "Wyatt";
@@ -25,6 +30,9 @@ int main()
     printf("%50.4lf \n", num);
     printf("%50.3lf \n", num);
     printf("%50.2lf \n", num);
+
+    double testBiggerNumber = biggerNumber(125, 777);
+    printf("%0.lf\n", testBiggerNumber);
 
     return 0;
 }
