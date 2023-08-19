@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 /*^^ You Need This by Default ^^ */
 int main()
 {
@@ -43,16 +44,53 @@ int main()
 
     // User Input:
     /*
-        int dragonballs;
+    //scanf() is used for numbers/char
+    int dragonballs;
     printf("What is the number of Dragonballs?\n ");
     scanf("%d", &dragonballs); // scan needs to use &
     printf("You entered: %d, there is actually: 7 dragonballs \n", dragonballs);
-    */
+
+    //fgets() is used for STRINGS
     char faveGame[25]; // 25 bytes
     printf("Tell me your favorite game \n");
     fgets(faveGame, 25, stdin);
-    name[strlen(faveGame) - 1] = '\0';
+    faveGame[strlen(faveGame) - 1] = '\0';
     printf("Wow, you actually like, %s? \n", faveGame);
+    */
 
+    double squareRootExample = sqrt(81);
+    printf("%lf \n", squareRootExample);
+    double powerExample = pow(2, 3);
+    printf("%lf \n", powerExample);
+    double numberToTestRounding = round(4.576867); // round to nearest whole number
+    printf("%.2lf \n", numberToTestRounding);
+    //-------------
+    const double PI = 3.14159;
+    double radius;
+    double circumference;
+    double area;
+
+    printf("What is the radius of the circle?\n ");
+    scanf("%lf", &radius); // get input and it'll assign to radius
+    circumference = 2 * PI * radius;
+    area = PI * radius * radius;
+    printf("CIRCUMFERENCE: %lf \n", circumference);
+    printf("AREA: %lf \n", area);
+
+    double A;
+    double B;
+    double C;
+
+    printf("Enter side A: ");
+    scanf("%lf", &A);
+
+    printf("Enter side B: ");
+    scanf("%lf", &B);
+
+    C = sqrt(A * A + B * B);
+    printf("Side C: %lf", C);
+    // Due to VS code you need to manually compile in terminal:
+    // gcc HelloWorld.c -o HelloWorld -lm
+    //./HelloWorld
     return 0;
 }
