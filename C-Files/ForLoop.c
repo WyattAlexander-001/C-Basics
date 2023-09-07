@@ -2,8 +2,7 @@
 
 int main()
 {
-    // Simple repeat of 5 times. Can do i = 1 and i <= 5.
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i <= 10; i += 2)
     {
         printf("test %d\n", i);
     }
