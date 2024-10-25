@@ -1,0 +1,5 @@
+"Today is the best day ever!", 
+"I love running around in the grass!", 
+"Everything's perfect when you're here!", 
+"I couldn't be happier!", 
+"Let's do this every day!"

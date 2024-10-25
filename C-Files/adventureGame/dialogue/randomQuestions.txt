@@ -1,0 +1,6 @@
+"Do you like the park?", 
+"Should we try a new trick today?", 
+"Am I a good dog?", 
+"Do you think we can meet new friends?", 
+"Is it time for a snack?"
+
