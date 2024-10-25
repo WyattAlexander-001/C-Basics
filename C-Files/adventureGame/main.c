@@ -206,7 +206,7 @@ void dayLoop() {
         printf("\nDay %d\n", day);
         displayArt("art/casper.txt");
         printf("What would you like to do today?\n");
-        printf("1. Talk to Casper\n2. Feed Casper\n3. Walk Casper\n4. Go to bed for the day\n9. Exit the game\nEnter your choice: ");
+        printf("1. Talk to Casper\n2. Feed Casper\n3. Walk Casper\n4. Go to bed for the day\n8. Check Casper's Happiness\n9. Exit the game\nEnter your choice: ");
         fgets(input, sizeof(input), stdin);  // Read input as a string
 
         // Check for 'quit' or '9' to exit
@@ -230,6 +230,9 @@ void dayLoop() {
                 break;
             case 4:
                 goToBed(&day);
+                break;
+            case 8:
+                printf("Casper's current happiness level is: %d\n", casperHappiness);
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
