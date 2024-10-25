@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>  // For handling strings
-#include <windows.h>  // For Sleep function
+#include <time.h>  // For randomization
 
-
-#define MAX_LINE_LENGTH 256 
+#define MAX_LINE_LENGTH 100
+#define MAX_DIALOGUE_LENGTH 512
+#define MAX_DIALOGUES 100
 
 void displaySplashScreen() {
     printf("\nWelcome to the Adventure of Casper!\n\n");
@@ -15,7 +16,6 @@ void displaySplashScreen() {
     printf("   /_____/   U\n\n");
     printf("Press any key to start your adventure...\n");
     getchar(); // Wait for user input
-    Sleep(1000); // Sleep for 1 second (1000 milliseconds)
 }
 
 void displayArt(const char* filename) {
@@ -38,19 +38,27 @@ void meetCasper() {
     printf("You meet Casper, he is your new pomeranian friend. He's excited to spend his days with you.\n");
 }
 
-void talkToCasper(int day) {
-    // Placeholder for talking to Casper. You can add dialogues based on the day.
-    printf("You talk to Casper.\n");
-    if (day == 1) {
-        printf("Casper: Woof! Woof! I'm so happy to meet you!\n");
-    } else if (day % 7 == 0) {
-        printf("Casper: Woof! Woof! It's been a week! I love you!\n");
-    } else if (day == 365) {
-        printf("Casper: Woof! Woof! It's been a year! I love you!\n");
-    } else {
-        printf("Casper: Woof! Woof!\n");
+// Function to read dialogues from a file, separated by commas
+void readDialogues(char dialogues[MAX_DIALOGUES][MAX_DIALOGUE_LENGTH], const char* filename, int *count) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        exit(1);
     }
+
+    char line[MAX_DIALOGUE_LENGTH]; // Buffer to hold each line
+    while (fgets(line, MAX_DIALOGUE_LENGTH, file) != NULL && *count < MAX_DIALOGUES) {
+        size_t len = strlen(line);
+        if (len > 0 && line[len - 1] == '\n') {
+            line[len - 1] = '\0'; // Remove newline character
+        }
+        strncpy(dialogues[*count], line, MAX_DIALOGUE_LENGTH);
+        dialogues[*count][MAX_DIALOGUE_LENGTH - 1] = '\0'; // Ensure null termination
+        (*count)++;
+    }
+    fclose(file);
 }
+
 
 void feedCasper() {
     // Placeholder for feeding Casper.
@@ -68,6 +76,34 @@ void goToBed(int *day) {
     printf("You go to bed. A new day begins...\n");
 }
 
+void talkToCasper(int day) {
+    static char dialogues[MAX_DIALOGUES][MAX_DIALOGUE_LENGTH];
+    static int numDialogues = 0;
+    static int initialized = 0;
+
+    if (!initialized) {
+        readDialogues(dialogues, "./dialogue/casperRandomQuotes.txt", &numDialogues);
+        initialized = 1;
+    }
+
+    printf("You talk to Casper.\n");
+
+    if (day == 1) {
+        printf("Casper: Woof! Woof! I'm so happy to meet you!\n");
+    } else if (day % 7 == 0) {
+        printf("Casper: Woof! Woof! It's been a week! I love you!\n");
+    } else if (day == 365) {
+        printf("Casper: Woof! Woof! It's been a year! I love you!\n");
+    } else if (day % 2 == 0 && numDialogues > 0) {
+        int index = rand() % numDialogues;
+        printf("Random index: %d, Total Dialogues: %d, Dialogue: %s\n", index, numDialogues, dialogues[index]);
+    } else {
+        printf("Casper: Woof! Woof!\n");
+    }
+}
+
+
+
 void dayLoop() {
     int day = 1;
     const int totalDays = 365;
@@ -83,7 +119,7 @@ void dayLoop() {
         printf("3. Walk Casper\n");
         printf("4. Go to bed for the day\n");
         printf("Enter your choice: ");
-        scanf_s("%d", &choice);
+        scanf("%d", &choice);
 
         switch(choice) {
             case 1:
@@ -111,11 +147,16 @@ void dayLoop() {
 
 
 int main() {
+    time_t seed = time(NULL);
+    srand((unsigned int)seed); // Seed random number generator
+    printf("Seed used: %ld\n", seed);  // Debug: print the seed value
+
     displaySplashScreen();
     meetCasper();
     dayLoop();
     return 0;
 }
+
 
 // To compile: gcc main.c -o main
 // To run: ./main
