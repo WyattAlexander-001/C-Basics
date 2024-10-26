@@ -116,10 +116,6 @@ void readDialogues(char dialogues[][MAX_DIALOGUE_LENGTH], const char* filename, 
     fclose(file);
 }
 
-
-
-
-
 void feedCasper() {
     printf("You feed Casper. He wags his tail happily.\n");
 }
