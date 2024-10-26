@@ -69,9 +69,23 @@ void displayArt(const char* filename) {
     fclose(file);
 }
 
+void clearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) { } // Clear the input buffer
+}
+
+
 void meetCasper() {
     printf("You meet Casper, he is your new pomeranian friend. He's excited to spend his days with you.\n");
 }
+
+void trimNewline(char* str) {
+    char* pos;
+    if ((pos = strchr(str, '\n')) != NULL) {
+        *pos = '\0'; // Replace the newline character with a null terminator
+    }
+}
+
 
 
 void trimWhitespace(char *str) {
@@ -146,7 +160,6 @@ void talkToCasper(int day) {
     char (*questions)[MAX_DIALOGUE_LENGTH];
     int numQuestions = 0;
 
-    // Assign questions based on happiness thresholds
     if (casperHappiness <= VERY_SAD_THRESHOLD) {
         questions = verySadDialogues;
         numQuestions = numVerySadDialogues;
@@ -160,7 +173,7 @@ void talkToCasper(int day) {
         questions = veryHappyDialogues;
         numQuestions = numVeryHappyDialogues;
     } else {
-        questions = neutralDialogues;  // Use neutral dialogues for mid-range happiness
+        questions = neutralDialogues;
         numQuestions = numNeutralDialogues;
     }
 
@@ -169,9 +182,9 @@ void talkToCasper(int day) {
         printf("Casper asks: %s (Yes/No): ", questions[questionIndex]);
 
         char response[10];
-        scanf("%s", response);
+        fgets(response, sizeof(response), stdin);
+        trimNewline(response);  // Trim newline character
 
-        // Check for affirmative response
         if (strcasecmp(response, "Yes") == 0 || strcasecmp(response, "y") == 0) {
             casperHappiness += 10; // Increase happiness
             printf("Casper looks happier!\n");
@@ -180,18 +193,14 @@ void talkToCasper(int day) {
             printf("Casper seems a bit sad.\n");
         }
 
-        // Check if Casper becomes too sad
         if (casperHappiness <= MIN_HAPPINESS) {
             printf("Casper is too sad and has passed away...\n");
-            exit(0); // End the game if too sad
+            exit(0);
         }
-        printf("Casper's happiness is now: %d\n", casperHappiness);
     } else {
         printf("Casper seems content today and does not have any questions.\n");
     }
 }
-
-
 
 void dayLoop() {
     int day = 1;
@@ -203,14 +212,20 @@ void dayLoop() {
         displayArt("art/casper.txt");
         printf("What would you like to do today?\n");
         printf("1. Talk to Casper\n2. Feed Casper\n3. Walk Casper\n4. Go to bed for the day\n8. Check Casper's Happiness\n9. Exit the game\nEnter your choice: ");
-        fgets(input, sizeof(input), stdin);  // Read input as a string
 
-        // Check for 'quit' or '9' to exit
-        if (strncmp(input, "quit", 4) == 0 || strncmp(input, "9", 1) == 0) {
-            printf("Goodbye! Thanks for playing.\n");
-            exit(0);  // Exit the program
+        if (!fgets(input, sizeof(input), stdin)) {  // Handle EOF
+            printf("Error reading input.\n");
+            continue;
         }
-        int choice = atoi(input);  // Converts string to integer, returns 0 if conversion fails
+
+        trimNewline(input);  // Trim the newline character
+
+        if (strcmp(input, "9") == 0 || strcasecmp(input, "quit") == 0) {
+            printf("Goodbye! Thanks for playing.\n");
+            exit(0);
+        }
+
+        int choice = atoi(input);  // Converts string to integer
 
         switch(choice) {
             case 1:
@@ -230,16 +245,22 @@ void dayLoop() {
             case 8:
                 printf("Casper's current happiness level is: %d\n", casperHappiness);
                 break;
+            case 9:
+                printf("Exiting the game.\n");
+                exit(0);
+                break;
             default:
                 printf("Invalid choice. Please try again.\n");
-                continue;
         }
+
         if (day > totalDays) {
             printf("It's past the final day... You say goodbye to Casper as he passes away.\n");
             return;
         }
     }
 }
+
+
 
 int main() {
     srand((unsigned int)time(NULL)); // Seed random number generator
@@ -257,3 +278,5 @@ int main() {
     dayLoop();
     return 0;
 }
+// To compile: gcc main.c -o casper
+// To run: ./casper
